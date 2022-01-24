@@ -52,7 +52,13 @@ public class MyMain {
     // Tail Recursive Method:
     public static int sumTR(int[] arr, int i, int sum) {
         // YOUR CODE HERE
-        return -1;
+//        return -1;
+        if (i == arr.length) {
+            return sum;
+        }
+        else {
+            return sumTR(arr, i+1, sum + arr[i]);
+        }
     }
 
 
@@ -70,13 +76,23 @@ public class MyMain {
     // Wrapper Method (Provided for you):
     public static boolean search(ArrayList<Integer> list, int x) {
         // YOUR CODE HERE
-        return false;
+//        return false;
+        return searchTR(list, x, 0);
     }
 
     // Tail Recursive Method:
     public static boolean searchTR(ArrayList<Integer> list, int x, int i) {
         // YOUR CODE HERE
-        return false;
+//        return false;
+        if (list.size() == i) {
+            return false;
+        }
+        else if (list.get(i) == x){
+            return true;
+        }
+        else {
+            return searchTR(list, x, i+1);
+        }
     }
 
 
@@ -90,11 +106,25 @@ public class MyMain {
     // Wrapper Method (Provided for you):
     public static boolean allEven(int[] arr) {
         // YOUR CODE HERE
-        return false;
+//        return false;
+        return allEvenTR(arr, 0);
     }
 
     // Tail Recursive Method:
     // You should write this yourself!
+    public static boolean allEvenTR(int[] arr, int i) {
+        // YOUR CODE HERE
+//        return false;
+        if (i == arr.length) {
+            return true;
+        }
+        else if (arr[i] % 2 != 0){
+            return false;
+        }
+        else {
+            return allEvenTR(arr, i+1);
+        }
+    }
 
 
     // ********************
@@ -137,11 +167,24 @@ public class MyMain {
     // Wrapper method
     public static boolean hasCountCopies(int[] arr, int x, int count) {
         // YOUR CODE HERE
-        return false;
+//        return false;
+        return hasCountCopiesRec(arr, x, count, 0);
     }
 
     // You may want a tail recursive method
-
+    public static boolean hasCountCopiesRec(int[] arr, int x, int count, int i) {
+        // YOUR CODE HERE
+//        return false;
+        if (i == arr.length) {
+            return (count == 0);
+        }
+        else if (arr[i] == x) {
+            return hasCountCopiesRec(arr, x, count-1, i+1);
+        }
+        else {
+            return hasCountCopiesRec(arr, x, count, i+1);
+        }
+    }
 
     // This recursive method checks if the array is sorted in
     // non-decreasing order
@@ -149,11 +192,24 @@ public class MyMain {
     // Wrapper method
     public static boolean isSorted(ArrayList<Integer> list) {
         // YOUR CODE HERE
-        return false;
+//        return false;
+        return isSortedRec(list, 0);
     }
 
     // You may want a tail recursive method
-
+    public static boolean isSortedRec(ArrayList<Integer> list, int i) {
+        // // YOUR CODE HERE
+        // return false;
+        if (i >= list.size() - 1) {
+            return true;
+        }
+        else if (list.get(i+1) < list.get(i)) {
+            return false;
+        }
+        else {
+            return isSortedRec(list, i+1);
+        }
+    }
 
 
 
@@ -183,8 +239,36 @@ public class MyMain {
 
     // No tail recursion necessary!
     public static boolean escape(char[][] mat, int row, int col) {
+
         // YOUR CODE HERE
-        return false;
+//        return false;
+        // Check out of bounds, return
+        if (row < 0 || col < 0 || row >= mat.length || col >= mat[0].length){
+            return false;
+        }
+        // If we're at wall, don't do anything
+        if (mat[row][col] == 'w') {
+            return false;
+        }
+        // If we've already visited there, let's return early
+        else if (mat[row][col] == '*') {
+            return false;
+        }
+        // If we are at f, we made it!
+        else if (mat[row][col] == 'f'){
+            return true;
+        }
+        else {
+            mat[row][col] = '*';
+
+            // Visit our neighbors (left, up, right, down)
+            boolean b1 = escape(mat, row, col-1);
+            boolean b2 = escape(mat, row-1, col);
+            boolean b3 = escape(mat, row, col+1);
+            boolean b4 = escape(mat, row+1, col);
+
+            return b1 || b2 || b3 || b4;
+        }
     }
 
 
@@ -197,12 +281,12 @@ public class MyMain {
 
         // row coordinates:
         char[][] mat = {   {'w', 'w', ' ', 'w', 'w', 'w'},      // 0
-                           {'w', ' ', ' ', 'w', 'f', 'w'},      // 1
-                           {'w', ' ', 'w', 'w', ' ', 'w'},      // 2
-                           {'w', ' ', ' ', ' ', ' ', 'w'},      // 3
-                           {'w', 'w', 'w', ' ', 'w', 'w'},      // 4
-                           {'w', ' ', ' ', ' ', 'w', ' '},      // 5
-                           {'w', 'w', 'w', 'w', 'w', ' '} };    // 6
+                {'w', ' ', ' ', 'w', 'f', 'w'},      // 1
+                {'w', ' ', 'w', 'w', ' ', 'w'},      // 2
+                {'w', ' ', ' ', ' ', ' ', 'w'},      // 3
+                {'w', 'w', 'w', ' ', 'w', 'w'},      // 4
+                {'w', ' ', ' ', ' ', 'w', ' '},      // 5
+                {'w', 'w', 'w', 'w', 'w', ' '} };    // 6
         // col coordinates:  0    1    2    3    4    5
         System.out.println(escape(mat, 5, 1));
     }
